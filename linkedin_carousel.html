@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LinkedIn Carousel – WorkforceIQ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:#111218;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  padding:40px 20px;
+  display:flex; flex-direction:column; align-items:center; gap:0;
+}
+
+/* ── Each slide is 1080×1080 scaled to 600px wide ── */
+.slide{
+  width:600px; height:600px;
+  position:relative; overflow:hidden;
+  flex-shrink:0;
+  background:#05080f;
+  page-break-after:always;
+}
+
+/* shared grid bg */
+.grid-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(79,209,197,0.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(79,209,197,0.035) 1px,transparent 1px);
+  background-size:30px 30px;
+  pointer-events:none;
+}
+
+/* orbs */
+.orb{position:absolute;border-radius:50%;pointer-events:none;}
+.orb-teal{background:radial-gradient(circle,rgba(79,209,197,0.13) 0%,transparent 70%);}
+.orb-indigo{background:radial-gradient(circle,rgba(102,126,234,0.11) 0%,transparent 70%);}
+.orb-purple{background:radial-gradient(circle,rgba(139,92,246,0.10) 0%,transparent 70%);}
+.orb-green{background:radial-gradient(circle,rgba(16,185,129,0.10) 0%,transparent 70%);}
+.orb-red{background:radial-gradient(circle,rgba(239,68,68,0.09) 0%,transparent 70%);}
+
+/* slide number badge */
+.slide-num{
+  position:absolute; top:22px; right:22px; z-index:10;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:20px; padding:4px 12px;
+  font-size:11px; color:#4a5a75; font-weight:600; letter-spacing:0.05em;
+}
+
+/* brand watermark bottom */
+.brand-mark{
+  position:absolute; bottom:20px; left:0; right:0; z-index:10;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.brand-dot{
+  width:22px;height:22px;border-radius:7px;
+  background:linear-gradient(135deg,#4fd1c5,#667eea);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;color:#05080f;
+}
+.brand-name-sm{font-size:12px;font-weight:700;color:#2d3a50;letter-spacing:0.04em;}
+
+/* tag pill */
+.tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(79,209,197,0.1);
+  border:1px solid rgba(79,209,197,0.22);
+  border-radius:20px;padding:5px 16px;
+  font-size:11px;color:#4fd1c5;font-weight:700;
+  letter-spacing:0.06em;text-transform:uppercase;
+}
+
+/* separator line */
+.sep{
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(79,209,197,0.35),transparent);
+  margin:18px 0;
+}
+
+/* ════════════════════════════════════
+   SLIDE 1 — COVER
+════════════════════════════════════ */
+#s1 .inner{
+  position:relative;z-index:2;
+  height:100%;display:flex;flex-direction:column;
+  justify-content:center;padding:48px 52px;
+}
+#s1 .top-line{
+  font-size:11px;font-weight:700;color:#4fd1c5;
+  letter-spacing:0.12em;text-transform:uppercase;margin-bottom:18px;
+  display:flex;align-items:center;gap:10px;
+}
+#s1 .top-line::before{
+  content:'';display:block;width:24px;height:2px;
+  background:linear-gradient(90deg,#4fd1c5,#667eea);border-radius:2px;
+}
+#s1 h1{
+  font-size:52px;font-weight:900;line-height:1.05;
+  color:#eef2ff;letter-spacing:-0.03em;margin-bottom:6px;
+}
+#s1 h1 em{
+  font-style:normal;
+  background:linear-gradient(135deg,#4fd1c5 0%,#667eea 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+#s1 .subtitle{
+  font-size:16px;color:#4a5a75;line-height:1.6;margin-bottom:32px;
+  max-width:400px;
+}
+#s1 .pill-row{display:flex;gap:8px;flex-wrap:wrap;}
+#s1 .pill{
+  padding:6px 16px;border-radius:8px;
+  font-size:12px;font-weight:600;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  color:#7a8aaa;
+}
+#s1 .big-num{
+  position:absolute;right:40px;top:50%;transform:translateY(-50%);
+  font-size:220px;font-weight:900;
+  color:rgba(79,209,197,0.04);
+  letter-spacing:-0.05em;line-height:1;
+  pointer-events:none;user-select:none;
+}
+
+/* ════════════════════════════════════
+   SLIDE 2 — PROBLEM STATEMENT
+════════════════════════════════════ */
+#s2 .inner{
+  position:relative;z-index:2;height:100%;
+  display:flex;flex-direction:column;padding:44px 50px;
+}
+#s2 .s-tag{margin-bottom:16px;}
+#s2 h2{font-size:34px;font-weight:800;color:#eef2ff;line-height:1.2;margin-bottom:8px;letter-spacing:-0.02em;}
+#s2 .lead{font-size:14px;color:#4a5a75;margin-bottom:24px;line-height:1.6;}
+#s2 .problem-grid{display:flex;flex-direction:column;gap:12px;flex:1;}
+#s2 .prob-card{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:12px;padding:14px 18px;
+  display:flex;align-items:flex-start;gap:14px;
+}
+#s2 .prob-icon{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+#s2 .prob-text h4{font-size:13px;font-weight:700;color:#c0cce0;margin-bottom:3px;}
+#s2 .prob-text p{font-size:12px;color:#4a5a75;line-height:1.5;}
+#s2 .stat-highlight{
+  margin-top:18px;padding:14px 18px;
+  background:linear-gradient(135deg,rgba(239,68,68,0.08),rgba(239,68,68,0.04));
+  border:1px solid rgba(239,68,68,0.15);border-radius:12px;
+  display:flex;align-items:center;gap:14px;
+}
+#s2 .big-pct{font-size:36px;font-weight:900;color:#f87171;line-height:1;}
+#s2 .pct-text{font-size:12px;color:#7a8aaa;line-height:1.5;}
+
+/* ════════════════════════════════════
+   SLIDE 3 — FEATURES OVERVIEW
+════════════════════════════════════ */
+#s3 .inner{
+  position:relative;z-index:2;height:100%;
+  display:flex;flex-direction:column;padding:40px 46px;
+}
+#s3 h2{font-size:30px;font-weight:800;color:#eef2ff;margin:12px 0 6px;letter-spacing:-0.02em;}
+#s3 .lead{font-size:13px;color:#4a5a75;margin-bottom:22px;}
+#s3 .feat-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;
+}
+#s3 .fc{
+  border-radius:14px;padding:18px 18px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+#s3 .fc::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+#s3 .fc1{background:linear-gradient(135deg,#080f1e,#0d1a2e);}
+#s3 .fc1::before{background:linear-gradient(90deg,#f87171,transparent);}
+#s3 .fc2{background:linear-gradient(135deg,#080f1e,#0d2010);}
+#s3 .fc2::before{background:linear-gradient(90deg,#10b981,transparent);}
+#s3 .fc3{background:linear-gradient(135deg,#0f0a1e,#1a0d28);}
+#s3 .fc3::before{background:linear-gradient(90deg,#8b5cf6,transparent);}
+#s3 .fc4{background:linear-gradient(135deg,#080f1e,#0d1f1e);}
+#s3 .fc4::before{background:linear-gradient(90deg,#4fd1c5,transparent);}
+#s3 .fc-icon{font-size:26px;margin-bottom:10px;}
+#s3 .fc-title{font-size:14px;font-weight:700;color:#eef2ff;margin-bottom:5px;}
+#s3 .fc-desc{font-size:11.5px;color:#4a5a75;line-height:1.55;}
+#s3 .fc-badge{
+  display:inline-block;margin-top:12px;
+  padding:3px 10px;border-radius:6px;
+  font-size:10px;font-weight:700;letter-spacing:0.04em;
+}
+.b-red{background:rgba(239,68,68,0.1);color:#f87171;}
+.b-green{background:rgba(16,185,129,0.1);color:#10b981;}
+.b-purple{background:rgba(139,92,246,0.1);color:#a78bfa;}
+.b-teal{background:rgba(79,209,197,0.1);color:#4fd1c5;}
+
+/* ════════════════════════════════════
+   SLIDE 4 — ATTRITION PREDICTOR
+════════════════════════════════════ */
+#s4 .inner{
+  position:relative;z-index:2;height:100%;
+  display:flex;flex-direction:column;padding:40px 46px;
+}
+#s4 h2{font-size:30px;font-weight:800;color:#eef2ff;margin:12px 0 6px;letter-spacing:-0.02em;}
+#s4 .lead{font-size:13px;color:#4a5a75;margin-bottom:20px;}
+
+#s4 .result-demo{
+  background:linear-gradient(135deg,rgba(239,68,68,0.07),rgba(239,68,68,0.03));
+  border:1px solid rgba(239,68,68,0.18);border-radius:14px;
+  padding:18px 22px;margin-bottom:16px;
+  display:flex;align-items:center;gap:20px;
+}
+#s4 .prob-circle{
+  width:70px;height:70px;border-radius:50%;flex-shrink:0;
+  background:conic-gradient(#f87171 0% 73%,rgba(239,68,68,0.1) 73% 100%);
+  display:flex;align-items:center;justify-content:center;position:relative;
+}
+#s4 .prob-circle::before{
+  content:'';position:absolute;
+  width:54px;height:54px;border-radius:50%;background:#05080f;
+}
+#s4 .prob-pct{
+  position:relative;z-index:1;
+  font-size:16px;font-weight:800;color:#f87171;
+}
+#s4 .result-info h4{font-size:14px;font-weight:700;color:#f87171;margin-bottom:4px;}
+#s4 .result-info p{font-size:12px;color:#7a8aaa;line-height:1.5;}
+
+#s4 .signals{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+#s4 .sig{
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);
+  border-radius:9px;padding:9px 12px;
+  display:flex;align-items:center;gap:8px;
+}
+#s4 .sig-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+#s4 .sig-txt{font-size:11.5px;color:#7a8aaa;font-weight:500;}
+
+#s4 .hr-box{
+  margin-top:14px;
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);
+  border-radius:10px;padding:10px 14px;
+  font-size:12px;color:#4a5a75;line-height:1.5;
+}
+#s4 .hr-box strong{color:#f87171;}
+
+/* ════════════════════════════════════
+   SLIDE 5 — PERFORMANCE FORECAST
+════════════════════════════════════ */
+#s5 .inner{
+  position:relative;z-index:2;height:100%;
+  display:flex;flex-direction:column;padding:40px 46px;
+}
+#s5 h2{font-size:30px;font-weight:800;color:#eef2ff;margin:12px 0 6px;letter-spacing:-0.02em;}
+#s5 .lead{font-size:13px;color:#4a5a75;margin-bottom:20px;}
+
+#s5 .rating-row{
+  display:flex;gap:10px;margin-bottom:18px;
+}
+#s5 .r-card{
+  flex:1;border-radius:12px;padding:14px 12px;text-align:center;
+  position:relative;overflow:hidden;
+}
+#s5 .r-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+#s5 .r1{background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.15);}
+#s5 .r1::after{background:#f87171;}
+#s5 .r2{background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.15);}
+#s5 .r2::after{background:#fb923c;}
+#s5 .r3{background:rgba(96,165,250,0.07);border:1px solid rgba(96,165,250,0.15);}
+#s5 .r3::after{background:#60a5fa;}
+#s5 .r4{background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.15);}
+#s5 .r4::after{background:#10b981;}
+#s5 .r-num{font-size:28px;font-weight:900;line-height:1;margin-bottom:4px;}
+#s5 .r-lbl{font-size:10px;font-weight:600;letter-spacing:0.04em;color:#4a5a75;}
+#s5 .r1 .r-num{color:#f87171;} #s5 .r2 .r-num{color:#fb923c;}
+#s5 .r3 .r-num{color:#60a5fa;} #s5 .r4 .r-num{color:#10b981;}
+
+#s5 .inputs-box{
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);
+  border-radius:12px;padding:14px 16px;margin-bottom:14px;
+}
+#s5 .inputs-title{font-size:11px;font-weight:700;color:#4fd1c5;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:10px;}
+#s5 .inp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+#s5 .inp-item{text-align:center;}
+#s5 .inp-val{font-size:18px;font-weight:800;color:#eef2ff;}
+#s5 .inp-lbl{font-size:10px;color:#4a5a75;margin-top:2px;}
+
+#s5 .outcome{
+  background:linear-gradient(135deg,rgba(16,185,129,0.07),rgba(16,185,129,0.03));
+  border:1px solid rgba(16,185,129,0.18);border-radius:12px;
+  padding:12px 16px;display:flex;align-items:center;gap:14px;
+}
+#s5 .out-icon{font-size:28px;}
+#s5 .out-text h4{font-size:13px;font-weight:700;color:#10b981;margin-bottom:3px;}
+#s5 .out-text p{font-size:12px;color:#7a8aaa;line-height:1.5;}
+
+/* ════════════════════════════════════
+   SLIDE 6 — TECH STACK
+════════════════════════════════════ */
+#s6 .inner{
+  position:relative;z-index:2;height:100%;
+  display:flex;flex-direction:column;padding:40px 46px;
+}
+#s6 h2{font-size:30px;font-weight:800;color:#eef2ff;margin:12px 0 6px;letter-spacing:-0.02em;}
+#s6 .lead{font-size:13px;color:#4a5a75;margin-bottom:22px;}
+#s6 .tech-grid{display:flex;flex-direction:column;gap:10px;flex:1;}
+#s6 .tech-row{
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);
+  border-radius:12px;padding:14px 18px;
+  display:flex;align-items:center;gap:16px;
+}
+#s6 .tech-icon{
+  width:42px;height:42px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+}
+#s6 .tech-info{flex:1;}
+#s6 .tech-name{font-size:14px;font-weight:700;color:#eef2ff;margin-bottom:2px;}
+#s6 .tech-use{font-size:12px;color:#4a5a75;}
+#s6 .tech-badge{
+  padding:3px 12px;border-radius:7px;
+  font-size:11px;font-weight:700;white-space:nowrap;
+}
+.ti-py{background:rgba(79,209,197,0.1);}
+.ti-st{background:rgba(255,75,75,0.1);}
+.ti-sk{background:rgba(245,158,11,0.1);}
+.ti-im{background:rgba(102,126,234,0.1);}
+.ti-pd{background:rgba(96,165,250,0.1);}
+.tb-py{background:rgba(79,209,197,0.1);color:#4fd1c5;border:1px solid rgba(79,209,197,0.2);}
+.tb-st{background:rgba(255,75,75,0.1);color:#ff6b6b;border:1px solid rgba(255,75,75,0.2);}
+.tb-sk{background:rgba(245,158,11,0.1);color:#f59e0b;border:1px solid rgba(245,158,11,0.2);}
+.tb-im{background:rgba(102,126,234,0.1);color:#818cf8;border:1px solid rgba(102,126,234,0.2);}
+.tb-pd{background:rgba(96,165,250,0.1);color:#60a5fa;border:1px solid rgba(96,165,250,0.2);}
+
+/* ════════════════════════════════════
+   SLIDE 7 — CALL TO ACTION
+════════════════════════════════════ */
+#s7 .inner{
+  position:relative;z-index:2;height:100%;
+  display:flex;flex-direction:column;justify-content:center;
+  align-items:center;padding:48px;text-align:center;
+}
+#s7 .big-emoji{font-size:56px;margin-bottom:16px;line-height:1;}
+#s7 h2{
+  font-size:38px;font-weight:900;color:#eef2ff;
+  letter-spacing:-0.03em;line-height:1.1;margin-bottom:10px;
+}
+#s7 h2 em{
+  font-style:normal;
+  background:linear-gradient(135deg,#4fd1c5,#667eea);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+#s7 .sub{font-size:14px;color:#4a5a75;line-height:1.7;margin-bottom:28px;max-width:380px;}
+#s7 .cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+#s7 .btn-primary{
+  padding:12px 28px;border-radius:10px;
+  background:linear-gradient(135deg,#4fd1c5,#667eea);
+  color:#05080f;font-size:13px;font-weight:700;
+  border:none;cursor:pointer;
+}
+#s7 .btn-outline{
+  padding:12px 28px;border-radius:10px;
+  background:transparent;
+  border:1px solid rgba(79,209,197,0.3);
+  color:#4fd1c5;font-size:13px;font-weight:700;cursor:pointer;
+}
+#s7 .hashtag-row{
+  display:flex;gap:8px;flex-wrap:justify-content;justify-content:center;
+}
+#s7 .ht{
+  padding:4px 12px;border-radius:7px;
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+  font-size:11px;color:#4a5a75;font-weight:600;
+}
+#s7 .corner-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 60% at 10% 90%,rgba(102,126,234,0.12),transparent),
+    radial-gradient(ellipse 50% 50% at 90% 10%,rgba(79,209,197,0.1),transparent);
+}
+
+/* ── separator between slides for screen display ── */
+.slide-sep{
+  width:600px;height:3px;
+  background:linear-gradient(90deg,transparent,rgba(79,209,197,0.25),transparent);
+}
+.slide-label{
+  width:600px;text-align:center;padding:10px 0 6px;
+  font-size:11px;color:#2d3a4a;font-weight:600;letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     SLIDE 1 — COVER
+══════════════════════════════════════ -->
+<div class="slide-label">SLIDE 1 OF 7 — COVER</div>
+<div class="slide" id="s1">
+  <div class="grid-bg"></div>
+  <div class="orb orb-teal" style="width:380px;height:380px;top:-100px;right:-80px;"></div>
+  <div class="orb orb-indigo" style="width:300px;height:300px;bottom:-100px;left:-60px;"></div>
+  <div class="slide-num">01 / 07</div>
+  <div class="inner">
+    <div class="top-line">Data Science Project Showcase</div>
+    <h1>Workforce<em>IQ</em></h1>
+    <p class="subtitle">
+      An AI-powered HR Analytics Dashboard that predicts attrition, forecasts performance & identifies promotion candidates.
+    </p>
+    <div class="pill-row">
+      <span class="pill">🐍 Python</span>
+      <span class="pill">⚡ Streamlit</span>
+      <span class="pill">🤖 Machine Learning</span>
+      <span class="pill">📊 HR Analytics</span>
+    </div>
+    <div class="big-num">IQ</div>
+  </div>
+  <div class="brand-mark">
+    <div class="brand-dot">W</div>
+    <div class="brand-name-sm">WorkforceIQ · Built with Python & Streamlit</div>
+  </div>
+</div>
+
+<div class="slide-sep"></div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 2 — PROBLEM STATEMENT
+══════════════════════════════════════ -->
+<div class="slide-label">SLIDE 2 OF 7 — PROBLEM STATEMENT</div>
+<div class="slide" id="s2">
+  <div class="grid-bg"></div>
+  <div class="orb orb-red" style="width:350px;height:350px;top:-80px;right:-60px;"></div>
+  <div class="slide-num">02 / 07</div>
+  <div class="inner">
+    <div class="tag">⚠️ The Problem</div>
+    <h2>HR Teams Are Flying Blind</h2>
+    <p class="lead">Companies lose top talent before they see the warning signs. Traditional HR has no predictive power.</p>
+    <div class="problem-grid">
+      <div class="prob-card">
+        <div class="prob-icon" style="background:rgba(239,68,68,0.1);">😤</div>
+        <div class="prob-text">
+          <h4>No Early Warning System</h4>
+          <p>Attrition is only discovered after the resignation letter arrives — too late to act.</p>
+        </div>
+      </div>
+      <div class="prob-card">
+        <div class="prob-icon" style="background:rgba(245,158,11,0.1);">📋</div>
+        <div class="prob-text">
+          <h4>Subjective Performance Reviews</h4>
+          <p>Appraisals rely on manager bias, not data — creating unfair and inconsistent outcomes.</p>
+        </div>
+      </div>
+      <div class="prob-card">
+        <div class="prob-icon" style="background:rgba(102,126,234,0.1);">🚧</div>
+        <div class="prob-text">
+          <h4>Missed Promotion Opportunities</h4>
+          <p>High performers stagnate when HR lacks tools to identify who is ready for the next step.</p>
+        </div>
+      </div>
+    </div>
+    <div class="stat-highlight">
+      <div class="big-pct">$15K</div>
+      <div class="pct-text">Average cost to replace one employee — WorkforceIQ helps prevent this with data-driven HR decisions.</div>
+    </div>
+  </div>
+  <div class="brand-mark">
+    <div class="brand-dot">W</div>
+    <div class="brand-name-sm">WorkforceIQ · Built with Python & Streamlit</div>
+  </div>
+</div>
+
+<div class="slide-sep"></div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 3 — FEATURES OVERVIEW
+══════════════════════════════════════ -->
+<div class="slide-label">SLIDE 3 OF 7 — FEATURES OVERVIEW</div>
+<div class="slide" id="s3">
+  <div class="grid-bg"></div>
+  <div class="orb orb-teal" style="width:300px;height:300px;top:-60px;right:-40px;"></div>
+  <div class="slide-num">03 / 07</div>
+  <div class="inner">
+    <div class="tag">✨ What It Does</div>
+    <h2>4 Powerful Features</h2>
+    <p class="lead">One dashboard. Three AI models. Complete HR intelligence.</p>
+    <div class="feat-grid">
+      <div class="fc fc1">
+        <div>
+          <div class="fc-icon">🚨</div>
+          <div class="fc-title">Attrition Predictor</div>
+          <div class="fc-desc">Scores each employee's resignation risk using 15 HR signals — before they decide to leave.</div>
+        </div>
+        <span class="fc-badge b-red">Random Forest</span>
+      </div>
+      <div class="fc fc2">
+        <div>
+          <div class="fc-icon">⭐</div>
+          <div class="fc-title">Performance Forecast</div>
+          <div class="fc-desc">Predicts appraisal rating (1–4) before review day using engagement and salary data.</div>
+        </div>
+        <span class="fc-badge b-green">MinMax + SMOTE</span>
+      </div>
+      <div class="fc fc3">
+        <div>
+          <div class="fc-icon">🚀</div>
+          <div class="fc-title">Promotion Readiness</div>
+          <div class="fc-desc">Identifies who is overdue for promotion — reducing career stagnation and attrition risk.</div>
+        </div>
+        <span class="fc-badge b-purple">Gradient Boosting</span>
+      </div>
+      <div class="fc fc4">
+        <div>
+          <div class="fc-icon">📊</div>
+          <div class="fc-title">Live HR Dashboard</div>
+          <div class="fc-desc">Real-time KPIs, donut charts, department analytics and plain-English HR recommendations.</div>
+        </div>
+        <span class="fc-badge b-teal">Streamlit</span>
+      </div>
+    </div>
+  </div>
+  <div class="brand-mark">
+    <div class="brand-dot">W</div>
+    <div class="brand-name-sm">WorkforceIQ · Built with Python & Streamlit</div>
+  </div>
+</div>
+
+<div class="slide-sep"></div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 4 — ATTRITION PREDICTOR
+══════════════════════════════════════ -->
+<div class="slide-label">SLIDE 4 OF 7 — ATTRITION PREDICTOR</div>
+<div class="slide" id="s4">
+  <div class="grid-bg"></div>
+  <div class="orb orb-red" style="width:320px;height:320px;bottom:-60px;right:-60px;"></div>
+  <div class="slide-num">04 / 07</div>
+  <div class="inner">
+    <div class="tag">🚨 Model 1</div>
+    <h2>Attrition Risk Predictor</h2>
+    <p class="lead">Enter an employee's profile → get an instant resignation probability score with HR action plan.</p>
+    <div class="result-demo">
+      <div class="prob-circle"><span class="prob-pct">73%</span></div>
+      <div class="result-info">
+        <h4>⚠️ HIGH RISK — Likely to Resign</h4>
+        <p>This employee has a 73% probability of leaving within the next review cycle. Immediate retention actions are recommended.</p>
+      </div>
+    </div>
+    <div class="signals">
+      <div class="sig"><div class="sig-dot" style="background:#f87171;box-shadow:0 0 5px rgba(248,113,113,0.5);"></div><span class="sig-txt">Works Overtime: Yes</span></div>
+      <div class="sig"><div class="sig-dot" style="background:#f87171;box-shadow:0 0 5px rgba(248,113,113,0.5);"></div><span class="sig-txt">Low Job Involvement</span></div>
+      <div class="sig"><div class="sig-dot" style="background:#f87171;box-shadow:0 0 5px rgba(248,113,113,0.5);"></div><span class="sig-txt">Below-market salary</span></div>
+      <div class="sig"><div class="sig-dot" style="background:#fb923c;box-shadow:0 0 5px rgba(251,146,60,0.5);"></div><span class="sig-txt">Long commute: 28 km</span></div>
+      <div class="sig"><div class="sig-dot" style="background:#fb923c;box-shadow:0 0 5px rgba(251,146,60,0.5);"></div><span class="sig-txt">2 yrs same manager</span></div>
+      <div class="sig"><div class="sig-dot" style="background:#10b981;box-shadow:0 0 5px rgba(16,185,129,0.5);"></div><span class="sig-txt">No stock options</span></div>
+    </div>
+    <div class="hr-box">
+      💡 <strong>Auto HR Advice:</strong> Audit overtime load · Benchmark salary vs market · Create 6-month promotion roadmap
+    </div>
+  </div>
+  <div class="brand-mark">
+    <div class="brand-dot">W</div>
+    <div class="brand-name-sm">WorkforceIQ · Built with Python & Streamlit</div>
+  </div>
+</div>
+
+<div class="slide-sep"></div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 5 — PERFORMANCE FORECAST
+══════════════════════════════════════ -->
+<div class="slide-label">SLIDE 5 OF 7 — PERFORMANCE FORECAST</div>
+<div class="slide" id="s5">
+  <div class="grid-bg"></div>
+  <div class="orb orb-green" style="width:320px;height:320px;top:-60px;right:-60px;"></div>
+  <div class="slide-num">05 / 07</div>
+  <div class="inner">
+    <div class="tag">⭐ Model 2</div>
+    <h2>Performance Rating Forecast</h2>
+    <p class="lead">Predict an employee's appraisal rating before review day — so managers can prepare, not be surprised.</p>
+    <div class="rating-row">
+      <div class="r-card r1"><div class="r-num">1</div><div class="r-lbl">Needs Work</div></div>
+      <div class="r-card r2"><div class="r-num">2</div><div class="r-lbl">Below Avg</div></div>
+      <div class="r-card r3"><div class="r-num">3</div><div class="r-lbl">Meets Goals</div></div>
+      <div class="r-card r4" style="border-width:2px;"><div class="r-num">4 ✓</div><div class="r-lbl">High Performer</div></div>
+    </div>
+    <div class="inputs-box">
+      <div class="inputs-title">📥 Sample Employee Inputs</div>
+      <div class="inp-grid">
+        <div class="inp-item"><div class="inp-val" style="color:#4fd1c5;">4/4</div><div class="inp-lbl">Job Involvement</div></div>
+        <div class="inp-item"><div class="inp-val" style="color:#10b981;">20%</div><div class="inp-lbl">Salary Hike</div></div>
+        <div class="inp-item"><div class="inp-val" style="color:#818cf8;">3 yrs</div><div class="inp-lbl">Same Manager</div></div>
+        <div class="inp-item"><div class="inp-val" style="color:#f59e0b;">Level 4</div><div class="inp-lbl">Job Level</div></div>
+        <div class="inp-item"><div class="inp-val" style="color:#60a5fa;">$7,200</div><div class="inp-lbl">Monthly Pay</div></div>
+        <div class="inp-item"><div class="inp-val" style="color:#4fd1c5;">No OT</div><div class="inp-lbl">Overtime</div></div>
+      </div>
+    </div>
+    <div class="outcome">
+      <div class="out-icon">🌟</div>
+      <div class="out-text">
+        <h4>Predicted: Rating 4 — High Performer</h4>
+        <p>Fast-track for promotion · Reward with bonus · Ask to mentor junior staff</p>
+      </div>
+    </div>
+  </div>
+  <div class="brand-mark">
+    <div class="brand-dot">W</div>
+    <div class="brand-name-sm">WorkforceIQ · Built with Python & Streamlit</div>
+  </div>
+</div>
+
+<div class="slide-sep"></div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 6 — TECH STACK
+══════════════════════════════════════ -->
+<div class="slide-label">SLIDE 6 OF 7 — TECH STACK</div>
+<div class="slide" id="s6">
+  <div class="grid-bg"></div>
+  <div class="orb orb-indigo" style="width:340px;height:340px;bottom:-80px;left:-80px;"></div>
+  <div class="slide-num">06 / 07</div>
+  <div class="inner">
+    <div class="tag">🛠️ Tech Stack</div>
+    <h2>Built End-to-End in Python</h2>
+    <p class="lead">Every component from data processing to interactive UI was written from scratch.</p>
+    <div class="tech-grid">
+      <div class="tech-row">
+        <div class="tech-icon ti-py">🐍</div>
+        <div class="tech-info">
+          <div class="tech-name">Python 3.11</div>
+          <div class="tech-use">Core language — data processing, modelling, logic</div>
+        </div>
+        <span class="tech-badge tb-py">Core</span>
+      </div>
+      <div class="tech-row">
+        <div class="tech-icon ti-st">⚡</div>
+        <div class="tech-info">
+          <div class="tech-name">Streamlit</div>
+          <div class="tech-use">Interactive dashboard UI with custom CSS theming</div>
+        </div>
+        <span class="tech-badge tb-st">Frontend</span>
+      </div>
+      <div class="tech-row">
+        <div class="tech-icon ti-sk">🤖</div>
+        <div class="tech-info">
+          <div class="tech-name">Scikit-learn</div>
+          <div class="tech-use">Random Forest, Gradient Boosting, StandardScaler</div>
+        </div>
+        <span class="tech-badge tb-sk">ML Models</span>
+      </div>
+      <div class="tech-row">
+        <div class="tech-icon ti-im">⚖️</div>
+        <div class="tech-info">
+          <div class="tech-name">Imbalanced-learn (SMOTE)</div>
+          <div class="tech-use">Oversampling minority class for balanced training data</div>
+        </div>
+        <span class="tech-badge tb-im">Balancing</span>
+      </div>
+      <div class="tech-row">
+        <div class="tech-icon ti-pd">🐼</div>
+        <div class="tech-info">
+          <div class="tech-name">Pandas · Matplotlib</div>
+          <div class="tech-use">Data wrangling, EDA, custom dark-themed charts</div>
+        </div>
+        <span class="tech-badge tb-pd">Data</span>
+      </div>
+    </div>
+  </div>
+  <div class="brand-mark">
+    <div class="brand-dot">W</div>
+    <div class="brand-name-sm">WorkforceIQ · Built with Python & Streamlit</div>
+  </div>
+</div>
+
+<div class="slide-sep"></div>
+
+<!-- ══════════════════════════════════════
+     SLIDE 7 — CALL TO ACTION
+══════════════════════════════════════ -->
+<div class="slide-label">SLIDE 7 OF 7 — CALL TO ACTION</div>
+<div class="slide" id="s7">
+  <div class="grid-bg"></div>
+  <div class="corner-glow"></div>
+  <div class="slide-num">07 / 07</div>
+  <div class="inner">
+    <div class="big-emoji">🚀</div>
+    <h2>Let's <em>Connect</em><br>& Collaborate</h2>
+    <p class="sub">
+      I'm a Data Science student passionate about building real-world ML projects.<br>
+      Open to internships, freelance projects & collaborations.
+    </p>
+    <div class="cta-btns">
+      <button class="btn-primary">💼 View Full Project</button>
+      <button class="btn-outline">🤝 Let's Connect</button>
+    </div>
+    <div class="hashtag-row">
+      <span class="ht">#DataScience</span>
+      <span class="ht">#Python</span>
+      <span class="ht">#MachineLearning</span>
+      <span class="ht">#Streamlit</span>
+      <span class="ht">#HRAnalytics</span>
+      <span class="ht">#OpenToWork</span>
+    </div>
+  </div>
+  <div class="brand-mark">
+    <div class="brand-dot">W</div>
+    <div class="brand-name-sm">WorkforceIQ · Built with Python & Streamlit</div>
+  </div>
+</div>
+
+<div style="width:600px;text-align:center;padding:30px 0 10px;font-size:12px;color:#2d3a4a;font-weight:600;letter-spacing:0.06em;">
+  💡 SCREENSHOT EACH SLIDE INDIVIDUALLY · UPLOAD AS LINKEDIN CAROUSEL (PDF OR IMAGES)
+</div>
+
+</body>
+</html>
