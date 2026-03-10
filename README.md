@@ -1,4 +1,4 @@
-WorkforceIQ – Employee Attrition & HR Analytics Platform
+## WorkforceIQ – Employee Attrition & HR Analytics Platform
 
 An AI-powered HR Analytics platform that predicts employee attrition, performance ratings, and promotion likelihood using Machine Learning and an interactive Streamlit dashboard.
 
