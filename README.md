@@ -148,7 +148,7 @@ Employee-Attrition-ML
 
 git clone https://github.com/mani572001/WorkforceIQ-HR-Analytics/edit/main
 
-Install dependencies
+## Install dependencies
 
 pip install -r requirements.txt
 ▶️ Run the Application
@@ -192,7 +192,7 @@ Using predictive HR analytics helps organizations:
 ✔ Increase employee satisfaction
 ✔ Improve productivity
 
-🔮 Future Improvements
+## 🔮 Future Improvements
 
 Potential enhancements include:
 
