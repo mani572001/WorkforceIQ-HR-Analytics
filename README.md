@@ -206,7 +206,7 @@ Potential enhancements include:
 
 🤖 Advanced ML / Deep Learning models
 
-👨‍💻 Author
+## 👨‍💻 Author
 
 Manikandan
 
@@ -214,7 +214,7 @@ Manikandan
 💻 Machine Learning Projects
 🎨 Streamlit Dashboard Development
 
-📜 License
+## 📜 License
 
 This project is licensed under the MIT License.
 
